@@ -28,9 +28,6 @@
     </head>
     <body>    
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div style='display:none;' id='otherMethods'>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        </div>
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -44,12 +41,12 @@
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form">
             <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
+              <input id="email" type="text" placeholder="Email" class="form-control">
             </div>
             <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
+              <input id="pwd" type="password" placeholder="Password" class="form-control">
             </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
+              <button type="submit" class="btn btn-success" onclick="MailSignIn()">Sign in</button>
             <a href="#" class="btn fa fa-facebook" onclick="FBSignIn()"></a>
             <a href="#" class="btn fa fa-google" onclick="GSignIn()"></a>
           </form>
@@ -74,7 +71,7 @@
         </div>
         <div class="col-md-4">
           <h2>Study Disease</h2>
-          <p>You can study about your disease on reputed websites and libraries over Internet. </p>
+          <p>You can study about your disease on reputed web-sites and libraries over Internet. </p>
           <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
        </div>
         <div class="col-md-4">
@@ -93,6 +90,10 @@
     
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
+        var details = {
+            birthdate: "00/00/0000",
+            gender: "other"
+        };
         var config = {
             apiKey: "AIzaSyBMlja6cvs_FMLj3q_8IveSvcv8XKiZRPM",
             authDomain: "healthbot2019.firebaseapp.com",
@@ -102,14 +103,26 @@
             messagingSenderId: "397471977401"
         };
         firebase.initializeApp(config);
-        
+        function MailSignIn()
+        {
+            var email = $('#email').val();
+            var password = $('#pwd').val();
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function()
+            {
+                sessionStorage.setItem("email",email);
+                sessionStorage.setItem("picURL","https://www.w3schools.com/howto/img_avatar.png");
+                window.location = "user.html";
+            }).catch(function(error) {
+                console.log(error);
+            });
+        }
         function GSignIn()
         {
             var provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then(function(result) {
-                localStorage.setItem("name",result.user.displayName);
-                localStorage.setItem("picURL",result.user.photoURL);
-                localStorage.setItem("email",result.user.email);
+                sessionStorage.setItem("picURL",result.user.photoURL);
+                sessionStorage.setItem("email",result.user.email);
+                window.location = "user.html";
             }).catch(function(error) {
                 console.log(error);
             });
@@ -117,14 +130,10 @@
         function FBSignIn()
         {
             var provider = new firebase.auth.FacebookAuthProvider();
-            provider.addScope('user_birthday');
-            provider.addScope('user_gender');
             firebase.auth().signInWithPopup(provider).then(function(result) {
-                localStorage.setItem("gender",result.additionalUserInfo.profile.gender);
-                localStorage.setItem("birthdate",result.additionalUserInfo.profile.birthday);
-                localStorage.setItem("name",result.additionalUserInfo.profile.name);
-                localStorage.setItem("picURL",result.additionalUserInfo.profile.picture.data.url);
-                localStorage.setItem("email",result.additionalUserInfo.profile.email);
+                sessionStorage.setItem("picURL",result.additionalUserInfo.profile.picture.data.url);
+                sessionStorage.setItem("email",result.additionalUserInfo.profile.email);
+                window.location = "user.html";
             }).catch(function(error) {
                 console.log(error);
             });

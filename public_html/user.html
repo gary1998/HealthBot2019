@@ -1,0 +1,178 @@
+<!doctype html>
+    <head>
+        <meta charset="utf-8">
+        <title>HealthBot 2019</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.css"/>
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>    
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">HealthBot 2019</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <div class="navbar-form navbar-right text-white">
+              <div class="btn btn-default">
+                  <div><strong id="userEmail">Email</strong> &nbsp;
+                      <img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="30" width="30">
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="jumbotron">
+      <div class="container">
+        <h3>Basic Details</h3>
+        <div class="panel">
+            <div class="panel-body">
+                <div class="form-input">
+                    <label for="birthdate">Birth Date: &nbsp;</label>
+                    <input class="form-control" style="height:auto;" type="date" id="birthdate">
+                    <hr>
+                    <label for="gender">Gender: &nbsp;</label>
+                    <select class="form-control" id="gender">
+                        <option value="male">
+                            male
+                        </option>
+                        <option value="female">
+                            female
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <p>
+            <a class="btn btn-primary btn-lg" href="#" role="button" onclick="save()">Save &raquo;</a>
+            <span id="status" style="float:right; display:none; font-size: 1em;" class="alert alert-info">
+                Updated!
+            </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Chat & Get Diagnosed</h2>
+          <p>Application asks you few very basic questions and on the basis of your answers, it diagnoses you. </p>
+          <p><a id="chatBtn" class="btn btn-default" href="#" role="button">Start &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Study Disease</h2>
+          <p>You can study about your disease on reputed web-sites and libraries over Internet. </p>
+          <p><a id="diseaseStudyBtn" class="btn btn-default" href="#" role="button">Start &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Monthly Report</h2>
+          <p>Application maintains your monthly report, so as to keep your safe in future.</p>
+          <p><a id="reportBtn" class="btn btn-default" href="#" role="button">Start &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; EDGE 2019</p>
+      </footer>
+    </div>        
+        
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+    <script>
+        var profileDetails = {};
+        var userDetails = {};
+        var firebase;
+        var detailsReq = false;
+        function getUserDetails()
+        {
+            userDetails = {
+                email : sessionStorage.getItem("email"),
+                picURL : sessionStorage.getItem("picURL")
+            };
+            setLog();
+            fetch();
+        }
+        function setEnv()
+        {
+            var config = {
+                apiKey: "AIzaSyBMlja6cvs_FMLj3q_8IveSvcv8XKiZRPM",
+                authDomain: "healthbot2019.firebaseapp.com",
+                databaseURL: "https://healthbot2019.firebaseio.com",
+                projectId: "healthbot2019",
+                storageBucket: "healthbot2019.appspot.com",
+                messagingSenderId: "397471977401"
+            };
+            firebase.initializeApp(config);
+        }
+        $(document).ready(function()
+        {
+           setEnv();
+           getUserDetails();
+        });
+        function fetch()
+        {
+            var db = firebase.firestore();
+            var docRef = db.collection("details").doc(userDetails.email);
+            docRef.get().then(function(doc) {
+                if (doc.exists) {
+                    profileDetails = doc.data();
+                    $('#birthdate').val(profileDetails.birthdate);
+                    $('#gender').val(profileDetails.gender);
+                    $('#chatBtn').removeClass("disabled");
+                } else {
+                    $('#chatBtn').addClass("disabled");
+                    $('#status').html("Basic details not found, kindly save them!");
+                    $('#status').show();
+                    $('#status').fadeOut(3000);
+                }
+            }).catch(function(error) {
+                console.log(error);
+            });
+        }
+        function setLog()
+        {
+            $('#userEmail').html(userDetails.email);
+            $('#userPicture').attr("src",userDetails.picURL);
+        }
+        function save()
+        {
+            var db = firebase.firestore();
+            db.collection("details").doc(userDetails.email).set({
+                birthdate : $('#birthdate').val(),
+                gender : $('#gender').val()
+            })
+            .then(function() {
+                $('#chatBtn').removeClass("disabled");
+                $('#status').html("Updated!");
+                $('#status').show();
+                $('#status').fadeOut(3000);
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+        }
+    </script>
+    </body>
+</html>
