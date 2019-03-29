@@ -111,7 +111,7 @@
                 sessionStorage.setItem("picURL","https://www.w3schools.com/howto/img_avatar.png");
                 window.location = "user.html";
             }).catch(function(error) {
-                console.log(error);
+                alert(error.message);
             });
         }
         function GSignIn()
@@ -122,7 +122,7 @@
                 sessionStorage.setItem("email",result.user.email);
                 window.location = "user.html";
             }).catch(function(error) {
-                console.log(error);
+                alert(error.message);
             });
         }
         function FBSignIn()
@@ -133,7 +133,7 @@
                 sessionStorage.setItem("email",result.additionalUserInfo.profile.email);
                 window.location = "user.html";
             }).catch(function(error) {
-                console.log(error);
+                alert(error.message);
             });
         }
     </script>
