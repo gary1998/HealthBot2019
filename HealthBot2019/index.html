@@ -24,7 +24,51 @@
         </style>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
-    <body>    
+    <body>
+        <div class="modal fade" id="signUpModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h2 style="text-align:center;">Sign Up</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="signUpEmail">E-Mail</label>
+                            <input class="form-control" placeholder="E-Mail" type="email" id="signUpEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="signUpPwd">Password</label>
+                            <input class="form-control" placeholder="Password" type="password" id="signUpPwd">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="signUpBtn" class="btn btn-success" onclick="signUp()">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="resetModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h2 style="text-align:center;">Reset Password</h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="resetEmail">E-Mail</label>
+                            <input class="form-control" placeholder="E-Mail" type="email" id="resetEmail">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="resetBtn" class="btn btn-success" onclick="reset()">Send Link</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -57,8 +101,9 @@
         <h1>Speak Up!</h1>
         <p>Welcome to the first ever web-application which can diagnose almost each and every disease and keep you healthy anytime, everywhere, without hassle and <strong>heavy Doctors' fees</strong>.</p>
         <p>
-            <abbr title="Sign up"><a class="btn btn-primary btn-lg" href="#" role="button">Sign Up &raquo;</a></abbr>
+            <abbr title="Sign up"><a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#signUpModal" role="button">Sign Up &raquo;</a></abbr>
         </p>
+        <p>Trouble logging in? <a href="#" data-toggle="modal" data-target="#resetModal">Reset Password</a></p>
       </div>
     </div>
 
@@ -92,6 +137,71 @@
     <script src="js/vendor/bootstrap.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
+        function reset()
+        {
+            $('#resetBtn').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+            $('#resetBtn').addClass('disabled');
+            var email = $('#resetEmail').val();
+            if(email)
+            {
+                firebase.auth().sendPasswordResetEmail(email).then(function() {
+                    $('#resetModal').modal("toggle");
+                    alert('Password reset link sent!');
+                }).catch(function(error) {
+                    alert(error.message);
+                });
+            }
+            else
+            {
+                alert('Enter E-Mail address!');
+            }
+        }
+        function signUp()
+        {
+            $('#signUpBtn').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+            $('#signUpBtn').addClass('disabled');
+            var email = $('#signUpEmail').val();
+            var pass = $('#signUpPwd').val();
+            if(email && pass)
+            {
+                firebase.auth().createUserWithEmailAndPassword(email, pass).then(function()
+                {
+                    var user = firebase.auth().currentUser;
+                    user.sendEmailVerification().then(function() 
+                    {
+                        $('#signUpModal').modal("toggle");
+                        alert('Verification link sent!');
+                        $('#signUpEmail').val("");
+                        $('#signUpPwd').val("");
+                        $('#signUpBtn').html('Confirm');
+                        $('#signUpBtn').removeClass('disabled');
+                    }).catch(function(error) 
+                    {
+                        alert(error.message);
+                        $('#signUpEmail').val("");
+                        $('#signUpPwd').val("");
+                        $('#signUpBtn').html('Confirm');
+                        $('#signUpBtn').removeClass('disabled');
+                    });
+
+                }).catch(function(error) 
+                {
+                    alert(error.message);
+                    $('#signUpEmail').val("");
+                    $('#signUpPwd').val("");
+                    $('#signUpBtn').html('Confirm');
+                    $('#signUpBtn').removeClass('disabled');
+                });
+            }
+            else
+            {
+                alert("Enter both details correctly!");
+                $('#signUpEmail').val("");
+                $('#signUpPwd').val("");
+                $('#signUpBtn').html('Confirm');
+                $('#signUpBtn').removeClass('disabled');
+            }
+        }
         function MailSignIn()
         {
             $('#mailLoginBtn').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
@@ -178,8 +288,22 @@
                     {
                         MailSignIn();
                     }
-               }); 
             });
+            $('#signUpPwd').keypress(function(i)
+            {
+               if(i.keyCode===13)
+               {
+                   signUp();
+               }
+            });
+            $('#resetEmail').keypress(function(i)
+            {
+                if(i.keyCode===13)
+                {
+                    reset();
+                }
+            })
+        });
     </script>
     </body>
 </html>
