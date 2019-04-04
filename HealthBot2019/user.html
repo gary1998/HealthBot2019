@@ -31,7 +31,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <div class="navbar-form navbar-right text-white">
               <div class="btn btn-default">
-                  <div id="profile">
+                  <div id="profile" onclick="logOut()">
                       <strong id="userEmail">Email</strong> &nbsp;
                       <img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="30" width="30">
                   </div>
@@ -106,12 +106,19 @@
         var userDetails = {};
         var firebase;
         var detailsReq = false;
+        function logOut()
+        {
+            firebase.auth().signOut().then(function() {
+                window.location = 'index.html';
+            }).catch(function(error) {
+                console.log(error.message);
+            });
+        }
         function getUserDetails()
         {
             userDetails = firebase.auth().currentUser;
             $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="30" width="30">');
             setLog();
-            fetch();
         }
         function setEnv(callback)
         {
@@ -158,6 +165,7 @@
             {
                 $('#userPicture').attr("src",userDetails.photoURL);
             }
+            fetch();
         }
         function save()
         {
