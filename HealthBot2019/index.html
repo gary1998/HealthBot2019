@@ -44,9 +44,9 @@
             <div class="form-group">
               <input id="pwd" type="password" placeholder="Password" class="form-control">
             </div>
-              <a href="#" class="btn btn-success" onclick="MailSignIn()">Sign in</a>
-            <a href="#" class="btn fa fa-facebook" onclick="FBSignIn()"></a>
-            <a href="#" class="btn fa fa-google" onclick="GSignIn()"></a>
+              <a href="#" id="mailLoginBtn" class="btn btn-success" onclick="MailSignIn()">Sign in</a>
+            <a href="#" id="fbLoginBtn" class="btn fa fa-facebook" onclick="FBSignIn()"></a>
+            <a href="#" id="googleLoginBtn" class="btn fa fa-google" onclick="GSignIn()"></a>
           </form>
         </div>
       </div>
@@ -103,37 +103,66 @@
         firebase.initializeApp(config);
         function MailSignIn()
         {
+            $('#mailLoginBtn').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+            $('#mailLoginBtn').addClass("disabled");
             var email = $('#email').val();
             var password = $('#pwd').val();
             firebase.auth().signInWithEmailAndPassword(email, password).then(function()
             {
-                sessionStorage.setItem("email",email);
-                sessionStorage.setItem("picURL","https://www.w3schools.com/howto/img_avatar.png");
-                window.location = "user.html";
+                if(firebase.auth().currentUser.emailVerified)
+                {
+                    window.location = "user.html";
+                }
+                else
+                {
+                    alert("This account isn't verified yet, please verify to continue");
+                    $('#mailLoginBtn').html('Sign in');
+                    $('#mailLoginBtn').removeClass("disabled");
+                    $('#email').val("");
+                    $('#pwd').val("");
+                }
             }).catch(function(error) {
                 alert(error.message);
+                $('#mailLoginBtn').html('Sign in');
+                $('#mailLoginBtn').removeClass("disabled");
+                $('#email').val("");
+                $('#pwd').val("");
             });
         }
         function GSignIn()
         {
+            $('#googleLoginBtn').html(' <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+            $('#googleLoginBtn').addClass("disabled");
             var provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then(function(result) {
-                sessionStorage.setItem("picURL",result.user.photoURL);
-                sessionStorage.setItem("email",result.user.email);
+                //sessionStorage.setItem("picURL",result.user.photoURL);
+                //sessionStorage.setItem("email",result.user.email);
+                console.log(result);
                 window.location = "user.html";
             }).catch(function(error) {
                 alert(error.message);
+                $('#googleLoginBtn').html('');
+                $('#googleLoginBtn').removeClass("disabled");
+                $('#email').val("");
+                $('#pwd').val("");
             });
         }
         function FBSignIn()
         {
+            $('#fbLoginBtn').html(' <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+            $('#fbLoginBtn').addClass("disabled");
             var provider = new firebase.auth.FacebookAuthProvider();
             firebase.auth().signInWithPopup(provider).then(function(result) {
-                sessionStorage.setItem("picURL",result.additionalUserInfo.profile.picture.data.url);
-                sessionStorage.setItem("email",result.additionalUserInfo.profile.email);
+                //sessionStorage.setItem("picURL",result.additionalUserInfo.profile.picture.data.url);
+                //sessionStorage.setItem("email",result.additionalUserInfo.profile.email);
+                console.log(result);
                 window.location = "user.html";
             }).catch(function(error) {
                 alert(error.message);
+                $('#fbLoginBtn').html('');
+                $('#fbLoginBtn').removeClass("disabled");
+                $('#email').val("");
+                $('#pwd').val("");
             });
         }
     </script>

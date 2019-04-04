@@ -31,7 +31,8 @@
         <div id="navbar" class="navbar-collapse collapse">
           <div class="navbar-form navbar-right text-white">
               <div class="btn btn-default">
-                  <div><strong id="userEmail">Email</strong> &nbsp;
+                  <div id="profile">
+                      <strong id="userEmail">Email</strong> &nbsp;
                       <img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="30" width="30">
                   </div>
               </div>
@@ -107,14 +108,12 @@
         var detailsReq = false;
         function getUserDetails()
         {
-            userDetails = {
-                email : sessionStorage.getItem("email"),
-                picURL : sessionStorage.getItem("picURL")
-            };
+            userDetails = firebase.auth().currentUser;
+            $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="30" width="30">');
             setLog();
             fetch();
         }
-        function setEnv()
+        function setEnv(callback)
         {
             var config = {
                 apiKey: "AIzaSyBMlja6cvs_FMLj3q_8IveSvcv8XKiZRPM",
@@ -125,11 +124,12 @@
                 messagingSenderId: "397471977401"
             };
             firebase.initializeApp(config);
+            setTimeout(callback,2000);
         }
         $(document).ready(function()
         {
-           setEnv();
-           getUserDetails();
+            $('#profile').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
+            setEnv(getUserDetails);
         });
         function fetch()
         {
@@ -154,7 +154,10 @@
         function setLog()
         {
             $('#userEmail').html(userDetails.email);
-            $('#userPicture').attr("src",userDetails.picURL);
+            if(userDetails.photoURL)
+            {
+                $('#userPicture').attr("src",userDetails.photoURL);
+            }
         }
         function save()
         {
