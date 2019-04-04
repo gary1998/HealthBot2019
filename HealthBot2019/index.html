@@ -92,19 +92,6 @@
     <script src="js/vendor/bootstrap.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
-        var details = {
-            birthdate: "00/00/0000",
-            gender: "other"
-        };
-        var config = {
-            apiKey: "AIzaSyBMlja6cvs_FMLj3q_8IveSvcv8XKiZRPM",
-            authDomain: "healthbot2019.firebaseapp.com",
-            databaseURL: "https://healthbot2019.firebaseio.com",
-            projectId: "healthbot2019",
-            storageBucket: "healthbot2019.appspot.com",
-            messagingSenderId: "397471977401"
-        };
-        firebase.initializeApp(config);
         function MailSignIn()
         {
             $('#mailLoginBtn').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
@@ -150,9 +137,6 @@
             $('#googleLoginBtn').addClass("disabled");
             var provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider).then(function(result) {
-                //sessionStorage.setItem("picURL",result.user.photoURL);
-                //sessionStorage.setItem("email",result.user.email);
-                console.log(result);
                 window.location = "user.html";
             }).catch(function(error) {
                 alert(error.message);
@@ -168,9 +152,6 @@
             $('#fbLoginBtn').addClass("disabled");
             var provider = new firebase.auth.FacebookAuthProvider();
             firebase.auth().signInWithPopup(provider).then(function(result) {
-                //sessionStorage.setItem("picURL",result.additionalUserInfo.profile.picture.data.url);
-                //sessionStorage.setItem("email",result.additionalUserInfo.profile.email);
-                console.log(result);
                 window.location = "user.html";
             }).catch(function(error) {
                 alert(error.message);
@@ -182,14 +163,23 @@
         }
         $(document).ready(function()
         {
-           $('#pwd').keypress(function(i)
-           {
-                if(i.keyCode===13)
-                {
-                    MailSignIn();
-                }
-           }); 
-        });
+            var config = {
+                apiKey: "AIzaSyBMlja6cvs_FMLj3q_8IveSvcv8XKiZRPM",
+                authDomain: "healthbot2019.firebaseapp.com",
+                databaseURL: "https://healthbot2019.firebaseio.com",
+                projectId: "healthbot2019",
+                storageBucket: "healthbot2019.appspot.com",
+                messagingSenderId: "397471977401"
+            };
+            firebase.initializeApp(config);
+            $('#pwd').keypress(function(i)
+            {
+                    if(i.keyCode===13)
+                    {
+                        MailSignIn();
+                    }
+               }); 
+            });
     </script>
     </body>
 </html>
