@@ -39,14 +39,14 @@
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right" role="form" target="return false;">
             <div class="form-group">
-              <input id="email" type="text" placeholder="Email" class="form-control">
+                <abbr title="Enter E-Mail"><input id="email" type="text" placeholder="Email" class="form-control"></abbr>
             </div>
             <div class="form-group">
-              <input id="pwd" type="password" placeholder="Password" class="form-control">
+                <abbr title="Enter Password"><input id="pwd" type="password" placeholder="Password" class="form-control"></abbr>
             </div>
-              <a href="#" id="mailLoginBtn" class="btn btn-success" onclick="MailSignIn()">Sign in</a>
-            <a href="#" id="fbLoginBtn" class="btn fa fa-facebook" onclick="FBSignIn()"></a>
-            <a href="#" id="googleLoginBtn" class="btn fa fa-google" onclick="GSignIn()"></a>
+                <abbr title="Login with E-Mail & Password"><a href="#" id="mailLoginBtn" class="btn btn-success" onclick="MailSignIn()"><i class="fa fa-sign-in" aria-hidden="true"></i></a></abbr>
+                <abbr title="Login with Facebook"><a href="#" id="fbLoginBtn" class="btn fa fa-facebook" onclick="FBSignIn()"></a></abbr>
+                <abbr title="Login with Google"><a href="#" id="googleLoginBtn" class="btn fa fa-google" onclick="GSignIn()"></a></abbr>
           </form>
         </div>
       </div>
@@ -56,7 +56,9 @@
       <div class="container">
         <h1>Speak Up!</h1>
         <p>Welcome to the first ever web-application which can diagnose almost each and every disease and keep you healthy anytime, everywhere, without hassle and <strong>heavy Doctors' fees</strong>.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Sign Up &raquo;</a></p>
+        <p>
+            <abbr title="Sign up"><a class="btn btn-primary btn-lg" href="#" role="button">Sign Up &raquo;</a></abbr>
+        </p>
       </div>
     </div>
 
@@ -85,7 +87,9 @@
         <p>&copy; EDGE 2019</p>
       </footer>
     </div>        
-    
+    <script src="js/vendor/jquery-1.11.2.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="js/vendor/bootstrap.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
         var details = {
@@ -107,27 +111,38 @@
             $('#mailLoginBtn').addClass("disabled");
             var email = $('#email').val();
             var password = $('#pwd').val();
-            firebase.auth().signInWithEmailAndPassword(email, password).then(function()
+            if(email && password)
             {
-                if(firebase.auth().currentUser.emailVerified)
+                firebase.auth().signInWithEmailAndPassword(email, password).then(function()
                 {
-                    window.location = "user.html";
-                }
-                else
-                {
-                    alert("This account isn't verified yet, please verify to continue");
-                    $('#mailLoginBtn').html('Sign in');
+                    if(firebase.auth().currentUser.emailVerified)
+                    {
+                        window.location = "user.html";
+                    }
+                    else
+                    {
+                        alert("This account isn't verified yet, please verify to continue");
+                        $('#mailLoginBtn').html('<i class="fa fa-sign-in" aria-hidden="true"></i>');
+                        $('#mailLoginBtn').removeClass("disabled");
+                        $('#email').val("");
+                        $('#pwd').val("");
+                    }
+                }).catch(function(error) {
+                    alert(error.message);
+                    $('#mailLoginBtn').html('<i class="fa fa-sign-in" aria-hidden="true"></i>');
                     $('#mailLoginBtn').removeClass("disabled");
                     $('#email').val("");
                     $('#pwd').val("");
-                }
-            }).catch(function(error) {
-                alert(error.message);
-                $('#mailLoginBtn').html('Sign in');
+                });
+            }
+            else
+            {
+                alert("Enter both details correctly!");
+                $('#mailLoginBtn').html('<i class="fa fa-sign-in" aria-hidden="true"></i>');
                 $('#mailLoginBtn').removeClass("disabled");
                 $('#email').val("");
                 $('#pwd').val("");
-            });
+            }
         }
         function GSignIn()
         {
@@ -165,9 +180,16 @@
                 $('#pwd').val("");
             });
         }
+        $(document).ready(function()
+        {
+           $('#pwd').keypress(function(i)
+           {
+                if(i.keyCode===13)
+                {
+                    MailSignIn();
+                }
+           }); 
+        });
     </script>
-    <script src="js/vendor/jquery-1.11.2.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-    <script src="js/vendor/bootstrap.min.js"></script>
     </body>
 </html>

@@ -31,11 +31,12 @@
         <div id="navbar" class="navbar-collapse collapse">
           <div class="navbar-form navbar-right text-white">
               <div class="btn btn-default">
-                  <div id="profile" onclick="logOut()">
+                  <div id="profile">
                       <strong id="userEmail">Email</strong> &nbsp;
-                      <img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="30" width="30">
+                      <img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="18" width="18">
                   </div>
               </div>
+              <div class="btn btn-danger" onclick="logOut()"><i class="fa fa-sign-out" aria-hidden="true"></i></div>
           </div>
         </div>
       </div>
@@ -99,7 +100,7 @@
         
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
     <script src="js/vendor/bootstrap.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/vendor/jquery-1.11.2.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
         var profileDetails = {};
@@ -117,7 +118,7 @@
         function getUserDetails()
         {
             userDetails = firebase.auth().currentUser;
-            $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="30" width="30">');
+            $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="18" width="18">');
             setLog();
         }
         function setEnv(callback)
