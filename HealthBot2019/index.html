@@ -43,6 +43,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <div class="g-recaptcha" data-sitekey="" style="float:left;"></div>
                         <button type="button" id="signUpBtn" class="btn btn-success" onclick="signUp()">Confirm</button>
                     </div>
                 </div>
@@ -135,6 +136,7 @@
     <script src="js/vendor/jquery-1.11.2.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
     <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
         function reset()
@@ -162,7 +164,7 @@
             $('#signUpBtn').addClass('disabled');
             var email = $('#signUpEmail').val();
             var pass = $('#signUpPwd').val();
-            if(email && pass)
+            if(email && pass && grecaptcha.getResponse())
             {
                 firebase.auth().createUserWithEmailAndPassword(email, pass).then(function()
                 {
@@ -171,6 +173,7 @@
                     {
                         $('#signUpModal').modal("toggle");
                         alert('Verification link sent!');
+                        grecaptcha.reset();
                         $('#signUpEmail').val("");
                         $('#signUpPwd').val("");
                         $('#signUpBtn').html('Confirm');
@@ -178,6 +181,7 @@
                     }).catch(function(error) 
                     {
                         alert(error.message);
+                        grecaptcha.reset();
                         $('#signUpEmail').val("");
                         $('#signUpPwd').val("");
                         $('#signUpBtn').html('Confirm');
@@ -187,6 +191,7 @@
                 }).catch(function(error) 
                 {
                     alert(error.message);
+                    grecaptcha.reset();
                     $('#signUpEmail').val("");
                     $('#signUpPwd').val("");
                     $('#signUpBtn').html('Confirm');
@@ -195,7 +200,8 @@
             }
             else
             {
-                alert("Enter both details correctly!");
+                alert("Something went wrong!");
+                grecaptcha.reset();
                 $('#signUpEmail').val("");
                 $('#signUpPwd').val("");
                 $('#signUpBtn').html('Confirm');
@@ -273,15 +279,14 @@
         }
         $(document).ready(function()
         {
-            var config = {
-                apiKey: "AIzaSyBMlja6cvs_FMLj3q_8IveSvcv8XKiZRPM",
-                authDomain: "healthbot2019.firebaseapp.com",
-                databaseURL: "https://healthbot2019.firebaseio.com",
-                projectId: "healthbot2019",
-                storageBucket: "healthbot2019.appspot.com",
-                messagingSenderId: "397471977401"
-            };
-            firebase.initializeApp(config);
+            $.getJSON("firebase_config.json",function(conf)
+            {
+                firebase.initializeApp(conf);
+            });
+            $.getJSON("recaptcha_config.json",function(conf)
+            {
+                $('.g-recaptcha').attr("data-sitekey",conf);
+            });
             $('#pwd').keypress(function(i)
             {
                     if(i.keyCode===13)
@@ -302,7 +307,7 @@
                 {
                     reset();
                 }
-            })
+            });
         });
     </script>
     </body>
