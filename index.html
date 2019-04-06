@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 	        <script>
 	            (adsbygoogle = window.adsbygoogle || []).push
 	            (
@@ -10,7 +10,7 @@
 	                        enable_page_level_ads: true
 	                    }
 	            );
-	</script>
+	        </script>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" href="img/favicon.png" type="image/png">
@@ -182,7 +182,6 @@
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <form class="row contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
@@ -200,9 +199,8 @@
                                 </div>
                             </div>
                             <div class="col-md-12 text-right">
-                                <button type="submit" value="submit" class="btn submit_btn">Send Message</button>
+                                <button type="submit" value="submit" class="btn submit_btn" onclick="sendMail();">Send Message</button>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -219,9 +217,8 @@
         						<h3>Join Us</h3>
         					</div>
         					<p>Do you want to be even more successful? Learn to love learning and growth. Join us and start learning.</p>
-        					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        					<p>
 Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 </p>
         				</aside>
         			</div>
@@ -232,10 +229,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         					</div>
         					<p>Stay updated with our latest trends</p>
         					<div id="mc_embed_signup">
-                                <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative">
                                 	<div class="input-group d-flex flex-row">
                                         <input name="EMAIL" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
-                                        <button class="btn sub-btn"><span class="lnr lnr-arrow-right"></span></button>		
+                                        <button class="btn sub-btn" onclick="subscribe();"><span class="lnr lnr-arrow-right"></span></button>		
                                     </div>				
                                     <div class="mt-10 info"></div>
                                 </form>
@@ -278,9 +274,48 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <script src="vendors/counter-up/jquery.waypoints.min.js"></script>
         <script src="vendors/counter-up/jquery.counterup.min.js"></script>
         <script src="js/mail-script.js"></script>
-        <!--gmaps Js-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
-        <script src="js/gmaps.min.js"></script>
         <script src="js/theme.js"></script>
+        <script src="https://smtpjs.com/v3/smtp.js"></script>
+        <script>
+            function sendMail()
+            {
+                var name = $('#name');
+                var email = $('#email');
+                var subject = $('#subject');
+                var message = $('#message');
+                var host, username, password, to;
+                $.getJSON("mail_config.json",function(data)
+                {
+                    host = data.Host;
+                    username = data.Username;
+                    password = data.Password;
+                    to = data.To;
+                });
+                Email.send({
+                    Host : host,
+                    Username : username,
+                    Password : password,
+                    To : to,
+                    From : email.val(),
+                    Subject : subject.val(),
+                    Body : name.val()+" says "+message.val()
+                }).then(function(msg)
+                    {
+                        if(msg!=="OK")
+                        {
+                            alert(msg);
+                        }
+                        else
+                        {
+                            name.val("");
+                            email.val("");
+                            subject.val("");
+                            message.val("");
+                            alert("Sent!");
+                        }
+                    }
+                );
+            }
+        </script>
     </body>
 </html>
