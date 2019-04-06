@@ -283,7 +283,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 var email = $('#email');
                 var subject = $('#subject');
                 var message = $('#message');
-                var host, username, password, to;
+                var host, username, password, to = "";
                 $.getJSON("mail_config.json",function(data)
                 {
                     host = data.Host;
