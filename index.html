@@ -199,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12 text-right">
-                                <button type="submit" value="submit" class="btn submit_btn" onclick="sendMail();">Send Message</button>
+                                <button type="submit" value="submit" class="btn submit_btn" onclick="query();">Send Message</button>
                             </div>
                     </div>
                 </div>
@@ -230,7 +230,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         					<p>Stay updated with our latest trends</p>
         					<div id="mc_embed_signup">
                                 	<div class="input-group d-flex flex-row">
-                                        <input name="EMAIL" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
+                                        <input id="subs" name="EMAIL" placeholder="Enter email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '" required="" type="email">
                                         <button class="btn sub-btn" onclick="subscribe();"><span class="lnr lnr-arrow-right"></span></button>		
                                     </div>				
                                     <div class="mt-10 info"></div>
@@ -277,12 +277,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         <script src="js/theme.js"></script>
         <script src="https://smtpjs.com/v3/smtp.js"></script>
         <script>
-            function sendMail()
+            function sendMail(email, subj, body)
             {
-                var name = $('#name');
-                var email = $('#email');
-                var subject = $('#subject');
-                var message = $('#message');
                 $.getJSON("mail_config.json",function(data)
                 {
                     Email.send({
@@ -290,9 +286,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         Username : data.Username,
                         Password : data.Password,
                         To : data.To,
-                        From : email.val(),
-                        Subject : subject.val(),
-                        Body : name.val()+" says "+message.val()
+                        From : email,
+                        Subject : subj,
+                        Body : body
                     }).then(function(msg)
                         {
                             if(msg!=="OK")
@@ -301,15 +297,28 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                             }
                             else
                             {
-                                name.val("");
-                                email.val("");
-                                subject.val("");
-                                message.val("");
+                                $('#name').val("");
+                                $('#email').val("");
+                                $('#subject').val("");
+                                $('#message').val("");
+                                $('#subs').val("");
                                 alert("Sent!");
                             }
                         }
                     );
                 });
+            }
+            function subscribe()
+            {
+                sendMail(
+                        $('#subs').val(), "Subscription", $('#subs').val()
+                    );
+            }
+            function query()
+            {
+                sendMail(
+                        $('#email').val(), "Query "+$('#subject').val(), $('#name').val()+" says "+$('#message').val()
+                    );
             }
         </script>
     </body>
