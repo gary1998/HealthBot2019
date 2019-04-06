@@ -283,41 +283,33 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 var email = $('#email');
                 var subject = $('#subject');
                 var message = $('#message');
-                var host = "";
-                var username = "";
-                var password = "";
-                var to = "";
                 $.getJSON("mail_config.json",function(data)
                 {
-                    host = data.Host;
-                    username = data.Username;
-                    password = data.Password;
-                    to = data.To;
+                    Email.send({
+                        Host : data.Host,
+                        Username : data.Username,
+                        Password : data.Password,
+                        To : data.To,
+                        From : email.val(),
+                        Subject : subject.val(),
+                        Body : name.val()+" says "+message.val()
+                    }).then(function(msg)
+                        {
+                            if(msg!=="OK")
+                            {
+                                alert(msg);
+                            }
+                            else
+                            {
+                                name.val("");
+                                email.val("");
+                                subject.val("");
+                                message.val("");
+                                alert("Sent!");
+                            }
+                        }
+                    );
                 });
-                Email.send({
-                    Host : host,
-                    Username : username,
-                    Password : password,
-                    To : to,
-                    From : email.val(),
-                    Subject : subject.val(),
-                    Body : name.val()+" says "+message.val()
-                }).then(function(msg)
-                    {
-                        if(msg!=="OK")
-                        {
-                            alert(msg);
-                        }
-                        else
-                        {
-                            name.val("");
-                            email.val("");
-                            subject.val("");
-                            message.val("");
-                            alert("Sent!");
-                        }
-                    }
-                );
             }
         </script>
     </body>
