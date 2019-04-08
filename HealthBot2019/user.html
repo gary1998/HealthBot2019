@@ -26,7 +26,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">HealthBot 2019</a>
+          <a class="navbar-brand" href="index.html">HealthBot 2019</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <div class="navbar-form navbar-right text-white">
@@ -77,7 +77,7 @@
         <div class="col-md-4">
           <h2>Chat & Get Diagnosed</h2>
           <p>Application asks you few very basic questions and on the basis of your answers, it diagnoses you. </p>
-          <p><a id="chatBtn" class="btn btn-default" href="#" role="button">Start &raquo;</a></p>
+          <p><a id="chatBtn" class="btn btn-default" href="chat.html" role="button">Start &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <h2>Study Disease</h2>
@@ -96,9 +96,9 @@
       <footer>
         <p>&copy; EDGE 2019</p>
       </footer>
-    </div>        
+    </div>
         
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>');</script>
     <script src="js/vendor/bootstrap.min.js"></script>
     <script src="js/vendor/jquery-1.11.2.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
@@ -118,24 +118,28 @@
         function getUserDetails()
         {
             userDetails = firebase.auth().currentUser;
-            $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="18" width="18">');
-            setLog();
+            if(userDetails)
+            {
+                $('body').show();
+                $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="18" width="18">');
+                setLog();
+            }
+            else
+            {
+                alert("Please go back and login to continue!"); 
+            }
         }
         function setEnv(callback)
         {
-            var config = {
-                apiKey: "AIzaSyBMlja6cvs_FMLj3q_8IveSvcv8XKiZRPM",
-                authDomain: "healthbot2019.firebaseapp.com",
-                databaseURL: "https://healthbot2019.firebaseio.com",
-                projectId: "healthbot2019",
-                storageBucket: "healthbot2019.appspot.com",
-                messagingSenderId: "397471977401"
-            };
-            firebase.initializeApp(config);
+            $.getJSON("firebase_config.json",function(conf)
+            {
+                firebase.initializeApp(conf);
+            });
             setTimeout(callback,2000);
         }
         $(document).ready(function()
         {
+            $('body').hide();
             $('#profile').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
             setEnv(getUserDetails);
         });
