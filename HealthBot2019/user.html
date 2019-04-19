@@ -65,7 +65,7 @@
         </div>
         <p>
             <a class="btn btn-primary btn-lg" href="#" role="button" onclick="save()">Save &raquo;</a>
-            <span id="status" style="float:right; display:none; font-size: 1em;" class="alert alert-info">
+            <span id="status" style="float:right; display:none; font-size: 0.8em; height:auto; width:auto;" class="alert alert-danger">
                 Updated!
             </span>
         </p>
@@ -157,7 +157,6 @@
                     $('#chatBtn').addClass("disabled");
                     $('#status').html("Basic details not found, kindly save them!");
                     $('#status').show();
-                    $('#status').fadeOut(3000);
                 }
             }).catch(function(error) {
                 console.log(error);
@@ -181,9 +180,10 @@
             })
             .then(function() {
                 $('#chatBtn').removeClass("disabled");
+                $('#status').removeClass("alert-danger");
+                $('#status').addClass("alert-success");
                 $('#status').html("Updated!");
                 $('#status').show();
-                $('#status').fadeOut(3000);
             })
             .catch(function(error) {
                 console.error(error);

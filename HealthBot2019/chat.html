@@ -13,6 +13,28 @@
                 padding-top: 50px;
                 padding-bottom: 20px;
             }
+            .bottom-input
+            {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 92vw;
+                background-color: red;
+                color: white;
+                text-align: center;
+                margin: 15px 15px 15px 15px;
+            }
+            #send
+            {
+                position: fixed;
+                right: 0;
+                bottom: 0;
+                color: white;
+                text-align: center;
+                margin: 15px 15px 15px 15px;
+                height: 4em;
+                width: 4em;
+            }
         </style>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
@@ -41,6 +63,12 @@
         </div>
       </div>
     </nav>
+        <div class="container" id="area" style="overflow-y: auto; position: absolute; top:80px; width:100%; height:480px;">
+        </div>
+        <div class="form-group bottom-input">
+            <input type="text" id="msg" placeholder="type message here..." class="form-control" style="font-size: 1.5em; height:55px;">
+            <button id="send" class="btn btn-success" onclick="sendMyMsg()">&Gg;</button>
+        </div>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>');</script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/jquery-1.11.2.min.js"></script>
@@ -48,9 +76,16 @@
         <script>
             $(document).ready(function()
             {
-                $('body').hide();
+                //$('body').hide();
                 $('#profile').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
                 setEnv(getUserDetails);
+                $('#msg').keypress(function(i)
+                {
+                    if(i.keyCode===13)
+                    {
+                        sendMyMsg();
+                    }
+                });
             });
             function setEnv(callback)
             {
@@ -67,20 +102,77 @@
                 {
                     $('body').show();
                     $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="18" width="18">');
-                    setLog();
+                    setLog(welcome);
                 }
                 else
                 {
                     alert("Please go back and login to continue!"); 
                 }
             }
-            function setLog()
+            function setLog(callback)
             {
                 $('#userEmail').html(userDetails.email);
                 if(userDetails.photoURL)
                 {
                     $('#userPicture').attr("src",userDetails.photoURL);
                 }
+                callback();
+            }
+            function sendBot(msg)
+            {
+                $('#area').append('<div class="alert alert-warning" style="text-align:left;">'+msg+'</div>').fadeIn(3000);
+            }
+            function waitBot()
+            {
+                $('#area').append('<div class="wait alert alert-warning" style="text-align:left;"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>').fadeIn(3000);
+            }
+            function welcome()
+            {
+                $('#area').append('<div class="alert alert-warning" style="text-align:left;">Hello <strong>'+userDetails.email+'</strong>, How are you feeling today?</div>').fadeIn(3000);
+            }
+            function sendMyMsg()
+            {
+                if($('#msg').val())
+                {
+                    $('#area').append('<div class="alert alert-info" style="text-align:right;">'+$('#msg').val()+'</div>').fadeIn(3000);
+                    waitBot();
+                    onServ(`{"text":"`+$('#msg').val()+`"}`);
+                    $('#msg').val('');
+                }
+            }
+            function onServ(msg)
+            {
+                $.ajax(
+                        {
+                            url: "https://api.infermedica.com/v2/parse",
+                            type: "POST",
+                            dataType: "json",
+                            processData: false,
+                            headers:{"App-Id":"7c61705b","App-Key":"31a7b9188e7e16b17965b2601545f9ac","Content-Type":"application/json"},
+                            data: msg,
+                            success: function(e)
+                            {
+                                $('.wait').remove();
+                                if(e.mentions.length>0)
+                                {
+                                    var symp = [];
+                                    for(i=0;i<e.mentions.length;i++)
+                                    {
+                                        symp.push(e.mentions[i].orth);
+                                    }
+                                    sendBot("I've noted <span class='badge badge-info'><strong>"+symp+"</strong></span>. Is that all? <strong>Y/N</strong>");
+                                }
+                                else
+                                {
+                                    sendBot("Sorry, I didn't understand!");
+                                }
+                                
+                            },
+                            error: function(err)
+                            {
+                                console.log(err);
+                            }
+                        });
             }
         </script>
     </body>
