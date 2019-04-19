@@ -279,13 +279,13 @@
         }
         $(document).ready(function()
         {
-            $.getJSON("firebase_config.json",function(conf)
-            {
-                firebase.initializeApp(conf);
-            });
             $.getJSON("recaptcha_config.json",function(key)
             {
                 $('#sumodal').append("<div class='g-recaptcha' data-sitekey='"+key+"' style='float:left;'></div>");
+            });
+            $.getJSON("firebase_config.json",function(conf)
+            {
+                firebase.initializeApp(conf);
             });
             $('#pwd').keypress(function(i)
             {
