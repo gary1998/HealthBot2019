@@ -43,8 +43,7 @@
                             <input class="form-control" placeholder="Password" type="password" id="signUpPwd">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <div class="g-recaptcha" data-sitekey="" style="float:left;"></div>
+                    <div class="modal-footer" id="sumodal">
                         <button type="button" id="signUpBtn" class="btn btn-success" onclick="signUp()">Confirm</button>
                     </div>
                 </div>
@@ -286,7 +285,7 @@
             });
             $.getJSON("recaptcha_config.json",function(conf)
             {
-                $('.g-recaptcha').attr("data-sitekey",conf);
+                $('#sumodal').append("<div class='g-recaptcha' data-sitekey='"+conf+"' style='float:left;'></div>");
             });
             $('#pwd').keypress(function(i)
             {

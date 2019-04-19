@@ -142,13 +142,15 @@
             }
             function onServ(msg)
             {
-                $.ajax(
+                $.getJSON("imedica.json",function(cred)
+                {
+                   $.ajax(
                         {
                             url: "https://api.infermedica.com/v2/parse",
                             type: "POST",
                             dataType: "json",
                             processData: false,
-                            headers:{"App-Id":"7c61705b","App-Key":"31a7b9188e7e16b17965b2601545f9ac","Content-Type":"application/json"},
+                            headers:cred,
                             data: msg,
                             success: function(e)
                             {
@@ -172,7 +174,8 @@
                             {
                                 console.log(err);
                             }
-                        });
+                        }); 
+                });
             }
         </script>
     </body>
