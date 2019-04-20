@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>HealthBot 2019</title>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+       <script>
+          
+          $(document).ready(function(){
+              $.ajax({
+                  url: "document.json",
+                  method: "GET",
+                  success: function(list)
+                  {
+                      search(sessionStorage.getItem("name"),list);
+                  }
+              });
+          });        
+           function search(name,list)
+           {
+               for(i=0;i<list.length;i++)
+               {
+                   if(list[i].Name.toLocaleString()===name.toLocaleString())
+                   {
+                       console.log(list[i].Disease_Desc);
+                       window.open(list[i].Disease_Desc);
+                       break;
+                   }
+               }
+           }
+           
+           
+           </script>
+
+
+    </head>
+    <body>
+        <div align="center">
+        <input type="text" id ="ip" align="center"/>
+        <Button id="btn">Search</Button> <br><br>
+        </div>
+        </body>
+    
+</html>

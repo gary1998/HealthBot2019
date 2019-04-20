@@ -35,6 +35,10 @@
                 height: 4em;
                 width: 4em;
             }
+            .option
+            {
+                z-index: 0;
+            }
         </style>
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
@@ -67,7 +71,7 @@
         </div>
         <div class="form-group bottom-input">
             <input type="text" id="msg" placeholder="type message here..." class="form-control" style="font-size: 1.5em; height:55px;">
-            <button id="send" class="btn btn-success" onclick="sendMyMsg()">&Gg;</button>
+            <button id="send" class="btn btn-success" onclick="sendMyMsg($('#msg').val())">&Gg;</button>
         </div>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>');</script>
         <script src="js/vendor/bootstrap.min.js"></script>
@@ -79,7 +83,8 @@
             var cond = [];
             var cid = [];
             var sympListed = false;
-            var qAsked = false;
+            var init = true;
+            var condi = false;
             $(document).ready(function()
             {
                 //$('body').hide();
@@ -89,7 +94,7 @@
                 {
                     if(i.keyCode===13)
                     {
-                        sendMyMsg();
+                        sendMyMsg($('#msg').val());
                     }
                 });
             });
@@ -142,38 +147,64 @@
                 }
                 callback();
             }
+            
+            
+            /*function askCond()
+            {
+                $('#area').append('<div class="alert alert-warning" style="text-align:left;">Tell me more conditions</div>');
+                listendCond();
+            }
+            function listenCond()
+            {
+                console.log$('.resp').last().innerHTML()
+            }*/
             function sendBot(msg)
             {
+                //alert("Bot sent msg");
                 $('#area').append('<div class="alert alert-warning" style="text-align:left;">'+msg+'</div>');
             }
             function waitBot()
             {
+                //alert("Bot waiting");
                 $('#area').append('<div class="wait alert alert-warning" style="text-align:left;"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>');
             }
             function welcome()
             {
+                //alert("Symp asked");
                 $('#area').append('<div class="alert alert-warning" style="text-align:left;">Hello <strong>'+userDetails.email+'</strong>, How are you feeling today?</div>');
             }
-            function sendMyMsg()
+            function sendMyMsg(msg)
             {
-                if($('#msg').val())
+                //alert("User sent msg");
+                if(msg)
                 {
-                    if($('#msg').val()==="N" && cid.length!==0)
+                    if(condi)
                     {
-                        $('#area').append('<div class="alert alert-info" style="text-align:right;">N</div>');
-                        prepEvdJson();
+                        //alert("Symp full");
+                        $('.option').remove();
+                        $('#area').append('<div class="alert alert-info resp" style="text-align:right;">'+msg+'</div>');
+                        waitBot();
+                    }
+                    if(init)
+                    {
+                        //alert("Symp again");
+                        $('#area').append('<div class="alert alert-info rep" style="text-align:right;">'+msg+'</div>');
+                        waitBot();
+                        onServ(`{"text":"`+$('#msg').val()+`"}`);
+
                     }
                     else
                     {
-                        $('#area').append('<div class="alert alert-info" style="text-align:right;">'+$('#msg').val()+'</div>');
+                        //alert("User sent msg else");
+                        $('#area').append('<div class="alert alert-info rep" style="text-align:right;">'+msg+'</div>');
                         waitBot();
-                        onServ(`{"text":"`+$('#msg').val()+`"}`);
                     }
                     $('#msg').val('');
                 }
             }
             function onServ(msg)
             {
+                //console.log("onServ called");
                 $.getJSON("imedica.json",function(cred)
                 {
                    $.ajax(
@@ -200,7 +231,7 @@
                                         $('.rec').last().append('<span class="badge badge-info">'+cond[i]+'</span>&nbsp;');
                                     }
                                     $('#area').append('</div>');
-                                    $('#area').append('<div class="alert alert-warning" style="text-align:left;">Tell me more if you want to add something or else type \"N\"</div>');
+                                    ask({"question":{"text":"Is this all?","items":[{"name":"Yes"},{"name":"No"}]}});
                                 }
                                 else
                                 {
@@ -245,8 +276,18 @@
                             data: JSON.stringify(jsonData),
                             success: function(dump)
                             {
-                                //sendBot("Now, let me ask you some questions to get accurate diagnosis report!");
-                                ask(dump);
+                                saveCond(dump.conditions[0].probability*1000);
+                                $('#area').append("<div class='alert alert-warning disease'><strong>Most probable diseases are:</strong><br></div>");
+                                for(i=0;i<dump.conditions.length;i++)
+                                {
+                                    console.log(dump);
+                                    $('.disease').append("<span><a class='btn dis'>"+dump.conditions[i].name+"</a>---> "+(dump.conditions[i].probability*1000)+"%</span><br>");
+                                    $('.dis').on("click",function()
+                                    {
+                                        sessionStorage.setItem("name",this.innerHTML);
+                                        window.open("search.html");
+                                    });
+                                }
                             },
                             error: function(err)
                             {
@@ -255,10 +296,56 @@
                         }); 
                 });
             }
+            function saveCond(prob)
+            {
+                var date = new Date();
+                var cond = prob;
+                sessionStorage.setItem("date",date);
+                sessionStorage.setItem("cond",cond);
+                console.log(sessionStorage.getItem("date")+" "+sessionStorage.getItem("cond"));
+            }
             function ask(e)
             {
+                $('.wait').remove();
                 sendBot(e.question.text);
-                sendBot("<span class='badge badge-info'>"+e.question.items[0].name+"</span>");
+                for(var i=0;i<e.question.items.length;i++)
+                {
+                    $('#area').append("<span class='btn btn-primary option'>"+e.question.items[i].name+"</span>&nbsp;");
+                }
+                if(condi)
+                {
+                    qAsked = true;
+                }
+                $('.option').click(function()
+                {
+                    sendMyMsg(this.innerHTML);
+                    $('.wait').remove();
+                    if(condi)
+                    {
+                        sendMyMsg(this.innerHTML); 
+                        answerDone(e);
+                    }
+                    if(!condi && this.innerHTML==="No")
+                    {
+                        sendBot("Tell me more...");
+                    }
+                    else
+                    {
+                        init = false;
+                        condi = true;
+                        prepEvdJson();
+                    }
+                    $('.option').remove();
+                });
+            }
+            function answerDone(e)
+            {
+                console.log(e);
+            }
+            function sendOp(msg)
+            {
+                $('#msg').val(msg);
+                $('#area').append('<div class="alert alert-warning answer" style="text-align:left;">'+msg+'&nbsp;');
             }
         </script>
     </body>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var date = sessionStorage.getItem("date");
+        var prob = sessionStorage.getItem("cond");
+	var chart = new CanvasJS.Chart("chartContainer", {
+		title:{
+			text: "..YOUR MONTHLY REPORT.."              
+		},
+		data: [              
+		{
+			type: "column",
+			dataPoints: [
+				{ label: date,  y: parseInt(prob) },
+				{ label: date, y: parseInt(prob)  },
+				{ label: date, y: parseInt(prob)  }
+				
+			]
+		}
+		]
+	});
+	chart.render();
+        });
+
+
+ 
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+</body>
+</html>

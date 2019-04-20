@@ -1,0 +1,426 @@
+
+  [
+    {
+      "id":"01",
+      "Name":"Asthma",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/asthma/symptoms-causes/syc-20369653"
+    },
+    {
+      "id":"02",
+      "Name":"Adrenal cancer",
+      "Disease_Desc":"https://www.healthline.com/health/adrenal-cancer"
+    },
+    {
+      "id":"03",
+      "Name":"Acne",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/acne/symptoms-causes/syc-20368047"
+    },
+    {
+      "id":"04",
+      "Name":"Adrenal cancer",
+      "Disease_Desc":"https://www.healthline.com/health/adrenal-cancer"
+    },
+    {
+      "id":"05",
+      "Name":"Acute bronchitis",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Acute_bronchitis"
+    },
+    {
+      "id":"06",
+      "Name":"Alcoholic liver disease",
+      "Disease_Desc":"https://www.medicalnewstoday.com/articles/215638.php"
+    },
+    {
+      "id":"07",
+      "Name":"Autoimmune hepatitis ",
+      "Disease_Desc":"https://liverfoundation.org/for-patients/about-the-liver/diseases-of-the-liver/autoimmune-hepatitis/ "
+    },
+    {
+      "id":"08",
+      "Name":"Aplastic anemia",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/aplastic-anemia/symptoms-causes/syc-20355015 "
+    },
+    {
+      "id":"09",
+      "Name":"Allergic conjunctivitis",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Allergic_conjunctivitis"
+    },
+    {
+      "id":"10",
+      "Name":"Acute kidney injury",
+      "Disease_Desc":"http://www.kidneyfund.org/kidney-disease/kidney-problems/acute-kidney-injury.html"
+    },
+    {
+      "id":"11",
+      "Name":"Back injury",
+      "Disease_Desc":"https://www.healthlinkbc.ca/health-topics/bacpn"
+    },
+    {
+      "id":"12",
+      "Name":"Bacterial vaginitis",
+      "Disease_Desc":"https://www.webmd.com/women/guide/what-is-bacterial-vaginosis#1"
+    },
+    {
+      "id":"13",
+      "Name":"Brain tumor",
+      "Disease_Desc":"https://mayfieldclinic.com/pe-braintumor.htm"
+    },
+    {
+      "id":"14",
+      "Name":"Breast cancer",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Breast_cancer"
+    },
+    {
+      "id":"15",
+      "Name":"Bipolar disorder",
+      "Disease_Desc":"https://www.nimh.nih.gov/health/topics/bipolar-disorder/index.shtml"
+    },
+    {
+      "id":"16",
+      "Name":"Cataract",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Cataract"
+    },
+    {
+      "id":"17",
+      "Name":"Crohn's disease ",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/crohns-disease/symptoms-causes/syc-20353304"
+    },
+    {
+      "id":"18",
+      "Name":"Common cold",
+      "Disease_Desc":"https://www.medicinenet.com/common_cold/article.htm"
+    },
+        {
+      "id":"19",
+      "Name":"Cholera",
+      "Disease_Desc":"https://www.webmd.com/a-to-z-guides/cholera-faq#1"
+    },
+        {
+      "id":"20",
+      "Name":"Chronic kidney disease",
+      "Disease_Desc":"www.kidneyfund.org/kidney-disease/chronic-kidney-disease-ckd/"
+    },
+        {
+      "id":"21",
+      "Name":"Carcinoid syndrome",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Carcinoid_syndrome"
+    },
+        {
+      "id":"22",
+      "Name":"Dengue fever",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Dengue_fever"
+    },
+        {
+      "id":"23",
+      "Name":"Dental caries",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Tooth_decay"
+    },
+        {
+      "id":"24",
+      "Name":"Diarrhea, unspecified",
+      "Disease_Desc":"https://medlineplus.gov/diarrhea.html"
+    },
+        {
+      "id":"25",
+      "Name":"Diabetic neuropathy",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/diabetic-neuropathy/.../syc-20371580"
+    },
+        {
+      "id":"26",
+      "Name":"Dysmenorrhea",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Dysmenorrhea"
+    },
+        {
+      "id":"27",
+      "Name":"Eye injury",
+      "Disease_Desc":"https://www.allaboutvision.com/conditions/eye-injuries.htm"
+    },
+        {
+      "id":"28",
+      "Name":"Esophageal cancer",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Esophageal_cancer"
+    },
+        {
+      "id":"29",
+      "Name":"Ear barotrauma",
+      "Disease_Desc":"https://www.medicalnewstoday.com/articles/322215.php"
+    },
+        {
+      "id":"30",
+      "Name":"Food allergy",
+      "Disease_Desc":"https://medlineplus.gov/foodallergy.html"
+    },
+      {
+      "id":"31",
+      "Name":"Food poisoning",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/food-poisoning/.../syc-20356230"
+    },
+     {
+      "id":"32",
+      "Name":"Functional ovarian cyst",
+      "Disease_Desc":"https://www.uofmhealth.org/health-library/hw181644"
+    },
+     {
+      "id":"33",
+      "Name":"Fatigue",
+      "Disease_Desc":"https://www.healthline.com/symptom/fatigue"
+    },
+     {
+      "id":"34",
+      "Name":"Facial nerve palsy",
+      "Disease_Desc":"https://www.msdmanuals.com/professional/neurologic...and...nerve.../facial-nerve-palsy"
+    },
+     {
+      "id":"35",
+      "Name":"Gall bladder and bile duct cancer",
+      "Disease_Desc":"https://www.cancer.gov/types/liver/patient/about-bile-duct-cancer-pdq"
+    },
+     {
+      "id":"36",
+      "Name":"Gastric cancer",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Stomach_cancer"
+    },
+     {
+      "id":"37",
+      "Name":"Goiter",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/goiter/symptoms-causes/syc-20351829"
+    },
+    {
+      "id":"38",
+      "Name":"Tuberculosis ",
+      "Disease_Desc":"https://medlineplus.gov/tuberculosis.html"
+    },
+     {
+      "id":"39",
+      "Name":"Glaucoma ",
+      "Disease_Desc":"https://www.allaboutvision.com/en-in/conditions/glaucoma/"
+    },
+     {
+      "id":"40",
+      "Name":"Hangover",
+      "Disease_Desc":"https://www.medicalnewstoday.com/articles/5089.php"
+    },
+     {
+      "id":"41",
+      "Name":"Heart valve disease",
+      "Disease_Desc":"https://www.webmd.com/heart-disease/guide/heart-valve-disease"
+    },
+     {
+      "id":"42",
+      "Name":"Hepatitis",
+      "Disease_Desc":"https://www.cdc.gov/hepatitis/abc/index.htm"
+    },
+     {
+      "id":"43",
+      "Name":"Hepatitis A",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/hepatitis-a/symptoms.../syc-20367007"
+    }, {
+      "id":"44",
+      "Name":"Hepatitis B",
+      "Disease_Desc":"https://www.webmd.com/hepatitis/digestive-diseases-hepatitis-b"
+    }, 
+    {
+      "id":"45",
+      "Name":"Hypertension ",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Hypertension"
+    },
+     {
+      "id":"46",
+      "Name":"Influenza ",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/InfluenzaFeedback"
+    },
+     {
+      "id":"47",
+      "Name":"Iron deficiency anemia",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/iron-deficiency-anemia/.../syc-2035503..."
+    },
+     {
+      "id":"48",
+      "Name":"Infectious arthritis",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Septic_arthritis"
+    },
+    {
+      "id":"49",
+      "Name":"Kidney cancer",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/kidney-cancer/.../syc-20352664"
+    },
+     {
+      "id":"50",
+      "Name":"Knee bursitis",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/knee-bursitis/symptoms.../syc-20355501"
+    },
+     {
+      "id":"51",
+      "Name":"Liver cancer",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/liver-cancer/symptoms.../syc-2035365..."
+    },
+     {
+      "id":"52",
+      "Name":"Lung cancer",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/lung-cancer/symptoms.../syc-20374620"
+    },
+     {
+      "id":"53",
+      "Name":"Lassa fever",
+      "Disease_Desc":"https://www.who.int/news-room/fact-sheets/detail/lassa-fever"
+    },
+     {
+      "id":"54",
+      "Name":"Lower limb fracture",
+      "Disease_Desc":"https://radiopaedia.org/articles/lower-extremity-fractures"
+    },
+     {
+      "id":"55",
+      "Name":"Measles",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Measles"
+    },
+     {
+      "id":"56",
+      "Name":"Malaria",
+      "Disease_Desc":"https://www.who.int/news-room/fact-sheets/detail/malaria"
+    },
+     {
+      "id":"57",
+      "Name":"Migraine",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Migraine"
+    },
+     {
+      "id":"58",
+      "Name":"Mumps",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/mumps/symptoms.../syc-20375361"
+    },
+     {
+      "id":"59",
+      "Name":"Morning sickness",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/morning-sickness/.../syc-20375254"
+    }, {
+      "id":"60",
+      "Name":"Nicotine dependence",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/nicotine-dependence/.../syc-20351584"
+    },
+     {
+      "id":"61",
+      "Name":"Nose injury",
+      "Disease_Desc":"https://www.uofmhealth.org/health-library/nosei"
+    },
+      {
+      "id":"62",
+      "Name":"Neurasthenia",
+      "Disease_Desc":"https://www.merriam-webster.com/dictionary/neurasthenia"
+    },
+      {
+      "id":"63",
+      "Name":"Ovarian cancer",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/ovarian-cancer/.../syc-20375941"
+    },
+      {
+      "id":"64",
+      "Name":"Obstructive jaundice",
+      "Disease_Desc":"https://www.healthxchange.sg/.../obstructive-jaundice-symptoms-treatment-options"
+    },
+      {
+      "id":"65",
+      "Name":"Pancreatic cancer",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/pancreatic-cancer/.../syc-20355421"
+    },
+      {
+      "id":"66",
+      "Name":"Peptic ulcer",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/peptic-ulcer/symptoms.../syc-20354223"
+    },
+      {
+      "id":"67",
+      "Name":"Plague",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/plague/symptoms.../syc-20351291"
+    },
+      {
+      "id":"68",
+      "Name":"Pneumonia",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/pneumonia/symptoms.../syc-20354204"
+    },
+      {
+      "id":"69",
+      "Name":"Proctitis",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/proctitis/symptoms.../syc-20376933"
+    },
+     {
+      "id":"70",
+      "Name":"Q fever",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/q-fever/symptoms.../syc-20352995"
+    },
+         {
+      "id":"71",
+      "Name":"Rabies",
+      "Disease_Desc":"https://www.medicalnewstoday.com/articles/181980.php"
+    },
+         {
+      "id":"72",
+      "Name":"Respiratory diphtheria",
+      "Disease_Desc":"https://www.medscape.com/.../what-are-the-signs-and-symptoms-of-respiratory-diphth."
+    },
+         {
+      "id":"73",
+      "Name":"Rib fracture",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Rib_fracture"
+    },
+         {
+      "id":"74",
+      "Name":"Rubella",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Rubella"
+    },
+         {
+      "id":"75",
+      "Name":"Scabies",
+      "Disease_Desc":"https://www.medicalnewstoday.com/articles/16961.php"},
+    
+         {
+      "id":"76",
+      "Name":"Sprained shoulder",
+      "Disease_Desc":"https://www.health.harvard.edu/a_to_z/shoulder-sprain-a-to-z"
+    },
+         {
+      "id":"77",
+      "Name":"Sprained elbow",
+      "Disease_Desc":"https://medlineplus.gov › Medical Encyclopedia"
+    },
+         {
+      "id":"78",
+      "Name":"Stress incontinence",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/stress-incontinence/.../syc-20355727"
+    },
+         {
+      "id":"79",
+      "Name":"Zollinger-Ellison syndrome",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases.../zollinger-ellison-syndrome/.../syc-20379042"
+    },
+         {
+      "id":"80",
+      "Name":"Yellow fever",
+      "Disease_Desc":"https://www.who.int/news-room/fact-sheets/detail/yellow-fever"
+    },
+         {
+      "id":"81",
+      "Name":"Water poisoning",
+      "Disease_Desc":"https://en.wikipedia.org/wiki/Water_intoxication"
+    },
+        {
+      "id":"82",
+      "Name":"Vomiting",
+      "Disease_Desc":"https://www.webmd.com/digestive-disorders/digestive-diseases-nausea-vomiting"
+    },
+        {
+      "id":"83",
+      "Name":"Hepatitis C",
+      "Disease_Desc":"https://www.mayoclinic.org/diseases-conditions/hepatitis-c/symptoms.../syc-20354278"
+    },
+        {
+      "id":"84",
+      "Name":"Urethritis",
+      "Disease_Desc":"https://www.webmd.com/a-to-z-guides/urethritis-symptoms-causes-treatments"
+    },
+    {
+      "id":"85",
+      "Name":"Typhoid fever",
+      "Disease_Desc":"https://www.who.int/immunization/diseases/typhoid/en/"
+    }
+]

@@ -82,7 +82,7 @@
         <div class="col-md-4">
           <h2>Study Disease</h2>
           <p>You can study about your disease on reputed web-sites and libraries over Internet. </p>
-          <p><a id="diseaseStudyBtn" class="btn btn-default" href="#" role="button">Start &raquo;</a></p>
+          <p><a id="diseaseStudyBtn" class="btn btn-default" onclick="bb()" role="button">Start &raquo;</a></p>
        </div>
         <div class="col-md-4">
           <h2>Monthly Report</h2>
@@ -107,6 +107,11 @@
         var userDetails = {};
         var firebase;
         var detailsReq = false;
+        function bb()
+        {
+            var WshShell = new ActiveXObject("Wscript.Shell");
+            WshShell.run("C:\Users\lenovo\Documents\NetBeansProjects\gary1998.github.io\HealthBot2019\ibm.jar");
+        }
         function logOut()
         {
             firebase.auth().signOut().then(function() {
@@ -139,7 +144,7 @@
         }
         $(document).ready(function()
         {
-            $('body').hide();
+            //$('body').hide();
             $('#profile').html('<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
             setEnv(getUserDetails);
         });
