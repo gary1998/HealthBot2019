@@ -112,7 +112,7 @@
             firebase.auth().signOut().then(function() {
                 window.location = 'index.html';
             }).catch(function(error) {
-                console.log(error.message);
+                alert(error.message);
             });
         }
         function getUserDetails()
@@ -159,7 +159,7 @@
                     $('#status').show();
                 }
             }).catch(function(error) {
-                console.log(error);
+                alert(error.message);
             });
         }
         function setLog()
@@ -186,7 +186,7 @@
                 $('#status').show();
             })
             .catch(function(error) {
-                console.error(error);
+                alert(error.message);
             });
         }
     </script>

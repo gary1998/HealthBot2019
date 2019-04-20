@@ -74,6 +74,12 @@
         <script src="js/vendor/jquery-1.11.2.min.js"></script>
         <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
         <script>
+            var profileDetails = {};
+            var evidenceJson = [];
+            var cond = [];
+            var cid = [];
+            var sympListed = false;
+            var qAsked = false;
             $(document).ready(function()
             {
                 //$('body').hide();
@@ -87,6 +93,24 @@
                     }
                 });
             });
+            function fetch()
+            {
+                var db = firebase.firestore();
+                var docRef = db.collection("details").doc(userDetails.email);
+                docRef.get().then(function(doc) {
+                    if (doc.exists) {
+                        profileDetails = doc.data();
+                        var ageDifMs = Date.now() - new Date(profileDetails.birthdate).getTime();
+                        var ageDate = new Date(ageDifMs);
+                        profileDetails.age = Math.abs(ageDate.getUTCFullYear() - 1970);
+                        welcome();
+                    } else {
+                        alert("Basic details not found!");
+                    }
+                }).catch(function(error) {
+                    alert(error.message);
+                });
+            }
             function setEnv(callback)
             {
                 $.getJSON("firebase_config.json",function(conf)
@@ -102,7 +126,7 @@
                 {
                     $('body').show();
                     $('#profile').html('<strong id="userEmail">Email</strong> &nbsp;<img id="userPicture" alt="Profile" style="border-radius: 100%;" src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg" height="18" width="18">');
-                    setLog(welcome);
+                    setLog(fetch);
                 }
                 else
                 {
@@ -120,23 +144,31 @@
             }
             function sendBot(msg)
             {
-                $('#area').append('<div class="alert alert-warning" style="text-align:left;">'+msg+'</div>').fadeIn(3000);
+                $('#area').append('<div class="alert alert-warning" style="text-align:left;">'+msg+'</div>');
             }
             function waitBot()
             {
-                $('#area').append('<div class="wait alert alert-warning" style="text-align:left;"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>').fadeIn(3000);
+                $('#area').append('<div class="wait alert alert-warning" style="text-align:left;"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>');
             }
             function welcome()
             {
-                $('#area').append('<div class="alert alert-warning" style="text-align:left;">Hello <strong>'+userDetails.email+'</strong>, How are you feeling today?</div>').fadeIn(3000);
+                $('#area').append('<div class="alert alert-warning" style="text-align:left;">Hello <strong>'+userDetails.email+'</strong>, How are you feeling today?</div>');
             }
             function sendMyMsg()
             {
                 if($('#msg').val())
                 {
-                    $('#area').append('<div class="alert alert-info" style="text-align:right;">'+$('#msg').val()+'</div>').fadeIn(3000);
-                    waitBot();
-                    onServ(`{"text":"`+$('#msg').val()+`"}`);
+                    if($('#msg').val()==="N" && cid.length!==0)
+                    {
+                        $('#area').append('<div class="alert alert-info" style="text-align:right;">N</div>');
+                        prepEvdJson();
+                    }
+                    else
+                    {
+                        $('#area').append('<div class="alert alert-info" style="text-align:right;">'+$('#msg').val()+'</div>');
+                        waitBot();
+                        onServ(`{"text":"`+$('#msg').val()+`"}`);
+                    }
                     $('#msg').val('');
                 }
             }
@@ -157,12 +189,18 @@
                                 $('.wait').remove();
                                 if(e.mentions.length>0)
                                 {
-                                    var symp = [];
                                     for(i=0;i<e.mentions.length;i++)
                                     {
-                                        symp.push(e.mentions[i].orth);
+                                        cond.push(e.mentions[i].name);
+                                        cid.push(e.mentions[i].id);
                                     }
-                                    sendBot("I've noted <span class='badge badge-info'><strong>"+symp+"</strong></span>. Is that all? <strong>Y/N</strong>");
+                                    $('#area').append('<div class="alert alert-warning rec" style="text-align:left;">Recognised conditions:&nbsp;');
+                                    for(i=0;i<cond.length;i++)
+                                    {
+                                        $('.rec').last().append('<span class="badge badge-info">'+cond[i]+'</span>&nbsp;');
+                                    }
+                                    $('#area').append('</div>');
+                                    $('#area').append('<div class="alert alert-warning" style="text-align:left;">Tell me more if you want to add something or else type \"N\"</div>');
                                 }
                                 else
                                 {
@@ -176,6 +214,51 @@
                             }
                         }); 
                 });
+            }
+            function prepEvdJson()
+            {
+                for(i=0;i<cid.length;i++)
+                {
+                    var ent = {
+                                "id":cid[i],
+                                "choice_id":"present",
+                                "initial":"true"
+                              };
+                    evidenceJson.push(ent);
+                }
+                diagnose();
+            }
+            function diagnose()
+            {
+                jsonData = {
+                    "sex":profileDetails.gender,
+                    "age":profileDetails.age,
+                    "evidence":evidenceJson
+                };
+                $.getJSON("imedica.json",function(cred)
+                {
+                   $.ajax(
+                        {
+                            url: "https://api.infermedica.com/v2/diagnosis",
+                            type: "POST",
+                            headers:cred,
+                            data: JSON.stringify(jsonData),
+                            success: function(dump)
+                            {
+                                //sendBot("Now, let me ask you some questions to get accurate diagnosis report!");
+                                ask(dump);
+                            },
+                            error: function(err)
+                            {
+                                console.log(err);
+                            }
+                        }); 
+                });
+            }
+            function ask(e)
+            {
+                sendBot(e.question.text);
+                sendBot("<span class='badge badge-info'>"+e.question.items[0].name+"</span>");
             }
         </script>
     </body>
