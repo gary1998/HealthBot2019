@@ -281,7 +281,7 @@
                                 for(i=0;i<dump.conditions.length;i++)
                                 {
                                     console.log(dump);
-                                    $('.disease').append("<span><a class='btn dis'>"+dump.conditions[i].name+"</a>---> "+(dump.conditions[i].probability*1000)+"%</span><br>");
+                                    $('.disease').append("<span><a class='btn dis'>"+dump.conditions[i].name+"</a>---> "+(dump.conditions[i].probability*100)+"%</span><br>");
                                     $('.dis').on("click",function()
                                     {
                                         sessionStorage.setItem("name",this.innerHTML);
