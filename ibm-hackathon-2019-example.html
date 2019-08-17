@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            IBM HackChallenge 2019 - Sample
+        </title>
+        <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+        <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pca-js@1.0.0/pca.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    </head>
+    <body>  
+
+        <div>
+            <button class="foo-button mdc-button" id="load-btn" type="submit" style="float: left;">Load Random Dataset</button>
+            <button class="foo-button mdc-button" id="show-btn" type="submit" style="float: right;">Show Dataset</button>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div class="mdc-data-table" id="ds-tbl" style="display: none;">
+            <table class="mdc-data-table__table" aria-label="Loaded Dataset">
+                <thead>
+                    <tr class="mdc-data-table__header-row">
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">S.No.</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #1</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #2</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #3</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #5</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #4</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #6</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #7</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #8</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #9</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #10</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #11</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #12</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #13</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Prop #14</th>
+                    </tr>
+                </thead>
+                <tbody id="tbl-body" class="mdc-data-table__content">
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div>
+            <button class="foo-button mdc-button" id="reduce-btn" type="submit" style="float: left;">Reduce Using PCA</button>
+            <button class="foo-button mdc-button" id="show-red-btn" type="submit" style="float: right;">Show Recuced Dataset</button>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div class="mdc-data-table" id="red-dattbl" style="display: none;">
+            <table class="mdc-data-table__table" aria-label="Reduced Dataset">
+                <thead>
+                    <tr class="mdc-data-table__header-row">
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">S.No.</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">X</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Y</th>
+                            <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Z</th>
+                    </tr>
+                </thead>
+                <tbody id="reduced-tbl" class="mdc-data-table__content">
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div>
+            <button class="foo-button mdc-button" id="plot-btn" type="submit" style="float: left;">Plot Graph</button>
+            <button class="foo-button mdc-button" id="show-graph-btn" type="submit" style="float: right;">Show Graph</button>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div id="graph" style="display: none;">
+
+        </div>
+        <script>
+
+            var showRDs = false;
+            $("#show-red-btn").on("click",function()
+            {
+                if(showRDs)
+                {
+                    $("#red-dattbl").hide();
+                    showRDs = false;
+                    $("#show-red-btn")[0].innerText = "Show Reduced Dataset";
+                }
+                else
+                {
+                    $("#red-dattbl").show();
+                    showRDs = true;
+                    $("#show-red-btn")[0].innerText = "Hide Reduced Dataset";
+                }
+            });
+
+            var showGp = false;
+            $("#show-graph-btn").on("click",function()
+            {
+                if(showGp)
+                {
+                    $("#graph").hide();
+                    showGp = false;
+                    $("#show-graph-btn")[0].innerText = "Show graph";
+                }
+                else
+                {
+                    $("#graph").show();
+                    showGp = true;
+                    $("#show-graph-btn")[0].innerText = "Hide Graph";
+                }
+            });
+
+            $("#plot-btn").on("click",function()
+            {
+                console.log(graphData);
+                Plotly.newPlot('graph', graphData);
+                alert("Graph plotted!");
+            });
+
+            var graphData = [];
+            var pointData = [];
+            var hullData = [];
+            $("#reduce-btn").on("click",function()
+            {
+                graphData = [];
+                pointData = {};
+                hullData = {};
+                var vectors = PCA.getEigenVectors(data);
+                var adData = PCA.computeAdjustedData(data,vectors[0],vectors[1],vectors[2]);
+                var formattedData = adData.formattedAdjustedData;
+                alert("PCA applied!");
+                for(var i=0;i<20;i++)
+                {
+                    $("#reduced-tbl").append(
+                        `
+                        <tr class="mdc-data-table__row">
+                            <td class="mdc-data-table__cell">`+(i+1)+`</td>
+                            <td class="mdc-data-table__cell">`+(formattedData[0][i])+`</td>
+                            <td class="mdc-data-table__cell">`+(formattedData[1][i])+`</td>
+                            <td class="mdc-data-table__cell">`+(formattedData[2][i])+`</td>
+                        </tr>
+                        `
+                    );
+                }
+                pointData = (
+                    {
+                        x: formattedData[0],
+                        y: formattedData[1],
+                        z: formattedData[2],
+                        mode: 'markers',
+                        type: 'scatter3d',
+                        marker: { size: 4 }
+                    }
+                );
+                hullData = (
+                    {
+                        alphahull: 5,
+                        opacity: 0.1,
+                        type: 'mesh3d',
+                        x: formattedData[0],
+                        y: formattedData[1],
+                        z: formattedData[2]
+                    }
+                );
+                graphData.push(pointData);
+                graphData.push(hullData);
+            });
+
+            var showDs = false;
+            $("#show-btn").on("click",function()
+            {
+                if(showDs)
+                {
+                    $("#ds-tbl").hide();
+                    showDs = false;
+                    $("#show-btn")[0].innerText = "Show Dataset";
+                }
+                else
+                {
+                    $("#ds-tbl").show();
+                    showDs = true;
+                    $("#show-btn")[0].innerText = "Hide Dataset";
+                }
+            });
+
+            var data = [];
+            $("#load-btn").on("click",function()
+            {
+                data = [];
+                for(var i=0;i<20;i++)
+                {
+                    var record = [];
+                    for(var j=0;j<14;j++)
+                    {
+                        record.push(Math.random(1).toFixed(2));
+                    } 
+                    data.push(record);
+                }
+                var i = 1;
+                $("#tbl-body")[0].innerHTML = "";
+                data.forEach(function(item)
+                {
+                    $("#tbl-body").append(
+                        `
+                        <tr class="mdc-data-table__row">
+                            <td class="mdc-data-table__cell">`+(i)+`</td>
+                            <td class="mdc-data-table__cell">`+(item[0])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[1])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[2])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[3])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[4])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[5])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[6])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[7])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[8])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[9])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[10])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[11])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[12])+`</td>
+                            <td class="mdc-data-table__cell">`+(item[13])+`</td>
+                        </tr>
+                        `
+                    );
+                    i = i+1;
+                });
+                alert("Dataset loaded!");
+            });
+        </script>
+    </body>
+</html>
